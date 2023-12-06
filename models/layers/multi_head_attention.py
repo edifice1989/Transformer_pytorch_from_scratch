@@ -1,5 +1,5 @@
 import torch
-from models.layers import self_attention
+from models.func import self_attention
 from models.layers import clones
 
 class MultiHeadAttention(nn.Module):

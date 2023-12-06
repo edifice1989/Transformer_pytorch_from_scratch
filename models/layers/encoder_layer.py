@@ -1,7 +1,8 @@
 import torch
 import torch.nn as nn
 from models.layers import multi_head_attention
-from models.layers import FeedForwardLayer
+from models.layers import feed_forward_layer
+
 class Encoder_layer(nn.Module):
 
     def __init__(self,n_head,d_model,hidden):
@@ -11,7 +12,7 @@ class Encoder_layer(nn.Module):
 
         self.attention_layer= multi_head_attention(d_model, n_head)
 
-        self.feed_forward_layer= FeedForwardLayer(d_model, hidden)
+        self.feed_forward_layer= feed_forward_layer(d_model, hidden)
 
     def forward(self, x):
         # we make a copy for later residue adding
