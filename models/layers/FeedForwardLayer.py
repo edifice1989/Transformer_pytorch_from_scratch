@@ -1,10 +1,10 @@
 import torch
 import torch.nn as nn
-class feed_forward_layer(nn.Module):
+class FeedForwardLayer(nn.Module):
 
     def __init__(self, d_model, hidden):
 
-        super(feed_forward_layer, self).__init__()
+        super(FeedForwardLayer, self).__init__()
 
         self.linear1 = nn.Linear(d_model, hidden)
 

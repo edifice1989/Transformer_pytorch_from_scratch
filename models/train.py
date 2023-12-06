@@ -1,8 +1,7 @@
 import torch
 import torch.nn as nn
-from models.block import encoder_block
-from models.block import decoder_block
-from models.model import transfomer
+
+from models.model import Transfomer
 
 lr= 0.01
 

@@ -2,11 +2,11 @@ import torch
 import torch.nn as nn
 
 
-class positional_encoding(nn.module):
+class PositionalEncoding(nn.module):
 
     def __init__(self,d_model,max_len):
 
-        super(positional_encoding).__init__()
+        super(PositionalEncoding).__init__()
 
         self.encoding = torch.zeros(max_len,d_model) # figure out the order of those two, 
         # how to use them in the below section

@@ -3,11 +3,11 @@ import torch.nn as nn
 
 
 
-class encode_decode(nn.Module):
+class EncodeDecode(nn.Module):
 
     def __init__(self,encoder,decoder,src_embed, tgt_embed, generator):
 
-        super(encode_decode).__init__()
+        super(EncodeDecode).__init__()
         self.encoder = encoder
         self.decoder = decoder
         self.src_embed = src_embed

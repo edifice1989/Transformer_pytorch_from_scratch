@@ -3,10 +3,10 @@ import torch.nn as nn
 from models.layers import multi_head_attention
 from models.layers import feed_forward_layer
 
-class Encoder_layer(nn.Module):
+class EncoderLayer(nn.Module):
 
     def __init__(self,n_head,d_model,hidden):
-        super(Encoder_layer, self).__init__()
+        super(EncoderLayer, self).__init__()
 
         self.norm = nn.LayerNorm(layer.size)
 

@@ -1,7 +1,7 @@
 import math
 import torch
 #attention 
-def attention(k,q,v):
+def SelfAttention(k,q,v):
     # q dim [batch_size,n_heads,length,d_tensor]
 
     d_tensor = q.size(-1) 
