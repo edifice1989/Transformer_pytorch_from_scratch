@@ -16,10 +16,10 @@ class Encoder(nn.Module):
                                          n_head),
                              n_copy)
 
-    def forward(self, x):
+    def forward(self, x,src_mask):
 
         for layer in self.layers:
 
-            x = layer(x)
+            x = layer(x,src_mask)
 
         return x
