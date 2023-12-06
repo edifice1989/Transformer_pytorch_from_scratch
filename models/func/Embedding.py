@@ -1,3 +1,6 @@
+import math
+import torch
+import torch.nn as nn
 class Embeddings(nn.Module):
     def __init__(self, d_model, vocab):
         super(Embeddings, self).__init__()
