@@ -1,20 +1,19 @@
 import torch
 import torch.nn as nn
-from models.layers import encoder_layer
-from models.layers import clones
+from models.layers import EncoderLayer
+from models.func import clones
+from models.func import LayerNorm
+
 class Encoder(nn.Module):
 
-    def __init__(self, d_model, hidden, n_head, n_copy):
+    def __init__(self,layer,N):
 
-        super().__init__()
+        super(Encoder,self).__init__()
        
         # n_copy = 6 
-
-        self.layers = clones(
-                            encoder_layer(d_model,
-                                         hidden,
-                                         n_head),
-                             n_copy)
+        self.norm = LayerNorm(layer.size)
+        self.layers = clones(layer,N)
+                           
 
     def forward(self, x,src_mask):
 
@@ -22,4 +21,4 @@ class Encoder(nn.Module):
 
             x = layer(x,src_mask)
 
-        return x
+        return self.norm(x)

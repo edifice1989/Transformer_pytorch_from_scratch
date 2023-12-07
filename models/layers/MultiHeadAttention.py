@@ -1,10 +1,11 @@
 import torch
+import torch.nn as nn
 from models.func import self_attention
-from models.layers import clones
+from models.func import clones
 
 class MultiHeadAttention(nn.Module):
 
-    def __init__(self, d_model, n_head):
+    def __init__(self, d_model, n_head,dropout=0.1):
 
         super(MultiHeadAttention, self).__init__()
   # reduced dim for each Q,K,V, but added up to d_model
@@ -14,15 +15,15 @@ class MultiHeadAttention(nn.Module):
 
         self.attn = None
 
-  # use the attention class defined above
-        self.attention = self_attention() 
-
   # 3 for K,Q,V, the forth layer is on the top for final attention score
         self.linears = clones(nn.Linear(d_model, d_model), 4) 
 
+        self.dropout = nn.Dropout(p=dropout)
 
-
-    def forward(self, q, k, v):
+    def forward(self, q, k, v, mask=None):
+        if mask is not None:
+            # Same mask applied to all h heads.
+            mask = mask.unsqueeze(1)
         samples = q.size(0) #q init as 512x512
 
     # split tensor by number of heads
@@ -36,7 +37,7 @@ class MultiHeadAttention(nn.Module):
         ]
         
     # calculate the attention score 
-        x, self.attn = attention(q, k, v)
+        x, self.attn = self_attention(q, k, v, mask=mask, dropout=self.dropout)
 
     # concat by view func [512, 8, 1, 64] => [512,1,512] add it back to 512
         x = (
@@ -44,6 +45,9 @@ class MultiHeadAttention(nn.Module):
             .contiguous()
             .view(samples, -1, self.n_head * self.d_k)
         )
+        del q
+        del k
+        del v
 
     # now apply the final linear layer copy
         return self.linears[-1](x) 

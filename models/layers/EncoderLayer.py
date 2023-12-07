@@ -1,30 +1,32 @@
 import torch
 import torch.nn as nn
-from models.layers import multi_head_attention
-from models.layers import feed_forward_layer
+from models.func import self_attention
+from models.func import SublayerConnection
+
+from models.layers import FeedForwardLayer
+
+from models.layers import MultiHeadAttention
+
+
+from models.func import clones
 
 class EncoderLayer(nn.Module):
 
-    def __init__(self,n_head,d_model,hidden):
+    def __init__(self,size, self_attn, feed_forward, dropout):
         super(EncoderLayer, self).__init__()
 
-        self.norm = nn.LayerNorm(layer.size)
+        self.multi_head_attn = MultiHeadAttention
+        self.feed_forward = FeedForwardLayer
+        self.sublayer = clones(SublayerConnection(size, dropout), 2)
+        self.size = size
 
-        self.attention_layer= multi_head_attention(d_model, n_head)
-
-        self.feed_forward_layer= feed_forward_layer(d_model, hidden)
-
-    def forward(self, x):
-        # we make a copy for later residue adding
-        _x = x
+    def forward(self, x,mask):
+    
         
-        # use multi-head attention we defined in part 1
-        atten = self.attention_layer(x)
+        # we need to pass a func layer to sublayer as the 2nd parameter NOT the computational result
+        # so we use lambda func here to map one input x to x,x,x 
+      
+        x = self.sublayer[0](x, lambda x: self.multi_head_attn(x, x, x, mask)) 
 
-        # add residue and normalize layer
-        _atten = _x + self.norm(atten)
 
-        # feed forward layer which we will define later 
-        x = self.feed_forward_layer(x)
-
-        return self.norm(x)+_atten
+        return self.sublayer[1](x, self.feed_forward)
