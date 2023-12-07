@@ -7,7 +7,7 @@ class EncodeDecode(nn.Module):
 
     def __init__(self,encoder,decoder,src_embed, tgt_embed, generator):
 
-        super(EncodeDecode).__init__()
+        super(EncodeDecode,self).__init__()
         self.encoder = encoder
         self.decoder = decoder
         self.src_embed = src_embed

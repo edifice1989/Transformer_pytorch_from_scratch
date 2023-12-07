@@ -1,9 +1,9 @@
 import math
 import torch
 import torch.nn as nn
-class embeddings(nn.Module):
+class Embeddings(nn.Module):
     def __init__(self, d_model, vocab):
-        super(embeddings, self).__init__()
+        super(Embeddings, self).__init__()
         self.lut = nn.Embedding(vocab, d_model)
         self.d_model = d_model
 

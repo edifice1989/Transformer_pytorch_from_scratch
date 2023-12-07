@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from models.func import LayerNorm
+from models.func.LayerNorm import LayerNorm
 
 class SublayerConnection(nn.Module):
     """
@@ -16,3 +16,4 @@ class SublayerConnection(nn.Module):
     def forward(self, x, sublayer):
         "Apply residual connection to any sublayer with the same size."
         return x + self.dropout(sublayer(self.norm(x)))
+

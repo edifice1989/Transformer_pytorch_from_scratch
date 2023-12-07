@@ -1,8 +1,8 @@
-from Transfomer import make_model
+from make_model import make_model
 import torch
 import torch.nn as nn
-from models.func import subsequent_mask
-from models.func import show_example
+from models.func.subsequent_mask import subsequent_mask
+from models.func.show_example import show_example
 
 def inference_test():
     test_model = make_model(11, 11, 2)
@@ -14,6 +14,7 @@ def inference_test():
     ys = torch.zeros(1, 1).type_as(src)
 
     for i in range(9):
+        #print(i)
         out = test_model.decode(
             memory, src_mask, ys, subsequent_mask(ys.size(1)).type_as(src.data)
         )
@@ -27,9 +28,11 @@ def inference_test():
     print("Example Untrained Model Prediction:", ys)
 
 
-def run_tests():
-    for _ in range(10):
-        inference_test()
 
+for _ in range(10):
+    inference_test()
 
-show_example(run_tests)
+#inference_test()
+
+#show_example(run_tests)
+#print('done!')

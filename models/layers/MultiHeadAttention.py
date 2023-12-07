@@ -1,17 +1,18 @@
 import torch
 import torch.nn as nn
-from models.func import self_attention
-from models.func import clones
+from models.func.self_attention import self_attention
+from models.func.clones import clones
 
 class MultiHeadAttention(nn.Module):
 
-    def __init__(self, d_model, n_head,dropout=0.1):
+    def __init__(self, h, d_model,dropout=0.1):
 
         super(MultiHeadAttention, self).__init__()
+        assert d_model % h == 0
   # reduced dim for each Q,K,V, but added up to d_model
-        self.d_k = d_model // n_head 
+        self.d_k = d_model // h 
         
-        self.n_head = n_head
+        self.h = h
 
         self.attn = None
 
@@ -24,11 +25,11 @@ class MultiHeadAttention(nn.Module):
         if mask is not None:
             # Same mask applied to all h heads.
             mask = mask.unsqueeze(1)
-        samples = q.size(0) #q init as 512x512
+        nbatches  = q.size(0) #q init as 512x512
 
     # split tensor by number of heads
       
-        q, k, v = [   lin(x).view(samples, -1, self.n_head, self.d_k).transpose(1, 2)
+        q, k, v = [   lin(x).view(nbatches , -1, self.h, self.d_k).transpose(1, 2)
     # [512,512] => [512,1,8,64] => [512,8,1,64] now we have 8 heads, 
     #length 1 since conv of size 1, dim of 64 for each q,k,v, 
     #ready for input to attention [batch_size, head, length, d_tensor]
@@ -43,7 +44,7 @@ class MultiHeadAttention(nn.Module):
         x = (
             x.transpose(1, 2)
             .contiguous()
-            .view(samples, -1, self.n_head * self.d_k)
+            .view(nbatches, -1, self.h * self.d_k)
         )
         del q
         del k

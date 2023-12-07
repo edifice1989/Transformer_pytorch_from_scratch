@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
-from models.func import clones
-from models.func import LayerNorm
+from models.func.clones import clones
+from models.func.LayerNorm import LayerNorm
 
 class Decoder(nn.Module):
     "Generic N layer decoder with masking."

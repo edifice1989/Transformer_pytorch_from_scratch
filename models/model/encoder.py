@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
-from models.layers import EncoderLayer
-from models.func import clones
-from models.func import LayerNorm
+from ..layers.EncoderLayer import EncoderLayer
+from ..func.clones import clones
+from ..func.LayerNorm import LayerNorm
 
 class Encoder(nn.Module):
 
