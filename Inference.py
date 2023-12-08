@@ -2,7 +2,7 @@ from make_model import make_model
 import torch
 import torch.nn as nn
 from models.func.subsequent_mask import subsequent_mask
-from models.func.show_example import show_example
+
 
 def inference_test():
     test_model = make_model(11, 11, 2)
@@ -28,11 +28,14 @@ def inference_test():
     print("Example Untrained Model Prediction:", ys)
 
 
-
-for _ in range(10):
-    inference_test()
-
+def run_tests():
+    for _ in range(10):
+        inference_test()
+RUN_EXAMPLES = True
+def show_example(fn, args=[]):
+    if __name__ == "__main__" and RUN_EXAMPLES:
+        return fn(*args)
 #inference_test()
 
-#show_example(run_tests)
+show_example(run_tests)
 #print('done!')
