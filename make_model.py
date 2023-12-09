@@ -4,8 +4,8 @@ import torch.nn as nn
 
 
 from models.model.EncoderDecoder import EncoderDecoder
-from models.model.Encoder import Encoder
-from models.model.Decoder import Decoder
+from models.model.encoder import Encoder
+from models.model.decoder import Decoder
 
 from models.layers.EncoderLayer import EncoderLayer
 from models.layers.DecoderLayer import DecoderLayer
@@ -15,8 +15,8 @@ from models.layers.MultiHeadAttention import MultiHeadAttention
 from models.layers.FeedForwardLayer import PositionwiseFeedForward
 
 
-from models.func.Embeddings import Embeddings
-from models.func.Generator import Generator
+from models.func.embeddings import Embeddings
+from models.func.generator import Generator
 def make_model(
          src_vocab, tgt_vocab, N=6, d_model=512, d_ff=2048, h=8, dropout=0.1):
     "Helper: Construct a model from hyperparameters."
