@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
-from ..layers.EncoderLayer import EncoderLayer
-from ..func.clones import clones
-from ..func.LayerNorm import LayerNorm
+from models.layers.EncoderLayer import EncoderLayer
+from models.func.clones import clones
+from models.func.LayerNorm import LayerNorm
 
 class Encoder(nn.Module):
 
@@ -16,7 +16,7 @@ class Encoder(nn.Module):
                            
 
     def forward(self, x,src_mask):
-
+        #print(src_mask.size())
         for layer in self.layers:
 
             x = layer(x,src_mask)

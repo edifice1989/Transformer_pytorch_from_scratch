@@ -1,9 +1,7 @@
 import torch
 import torch.nn as nn
-from models.func.self_attention import self_attention
-from models.func.SublayerConnection import SublayerConnection
 
-from models.layers.FeedForwardLayer import FeedForwardLayer
+from models.func.SublayerConnection import SublayerConnection
 
 from models.layers.MultiHeadAttention import MultiHeadAttention
 
@@ -25,7 +23,7 @@ class EncoderLayer(nn.Module):
         
         # we need to pass a func layer to sublayer as the 2nd parameter NOT the computational result
         # so we use lambda func here to map one input x to x,x,x 
-      
+        #print(mask.size())
         x = self.sublayer[0](x, lambda x: self.self_attn(x, x, x, mask)) 
 
 

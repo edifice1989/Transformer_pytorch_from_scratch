@@ -3,7 +3,7 @@ import copy
 import torch.nn as nn
 
 
-from models.model.EncodeDecode import EncodeDecode
+from models.model.EncoderDecoder import EncoderDecoder
 from models.model.Encoder import Encoder
 from models.model.Decoder import Decoder
 
@@ -12,7 +12,7 @@ from models.layers.DecoderLayer import DecoderLayer
 
 from models.layers.PositionalEncoding import PositionalEncoding
 from models.layers.MultiHeadAttention import MultiHeadAttention
-from models.layers.FeedForwardLayer import FeedForwardLayer
+from models.layers.FeedForwardLayer import PositionwiseFeedForward
 
 
 from models.func.Embeddings import Embeddings
@@ -22,23 +22,22 @@ def make_model(
     "Helper: Construct a model from hyperparameters."
 
     c = copy.deepcopy
-
-    pos = PositionalEncoding(d_model,dropout) 
-
     attn = MultiHeadAttention(h, d_model)
-
-    ff = FeedForwardLayer(d_model, d_ff)
-
-    model = EncodeDecode(
+    ff = PositionwiseFeedForward(d_model, d_ff, dropout)
+    position = PositionalEncoding(d_model, dropout)
+    model = EncoderDecoder(
         Encoder(EncoderLayer(d_model, c(attn), c(ff), dropout), N),
         Decoder(DecoderLayer(d_model, c(attn), c(attn), c(ff), dropout), N),
-        nn.Sequential(Embeddings(d_model, src_vocab), c(pos)),#src embedded
-        nn.Sequential(Embeddings(d_model, tgt_vocab), c(pos)), #target embedded
+        nn.Sequential(Embeddings(d_model, src_vocab), c(position)),
+        nn.Sequential(Embeddings(d_model, tgt_vocab), c(position)),
         Generator(d_model, tgt_vocab),
     )
+
+    # This was important from their code.
+    # Initialize parameters with Glorot / fan_avg.
     for p in model.parameters():
         if p.dim() > 1:
-            nn.init.kaiming_uniform_(p)
+            nn.init.xavier_uniform_(p)
     return model
 
        

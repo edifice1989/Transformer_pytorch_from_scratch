@@ -1,4 +1,4 @@
-from models.func import subsequent_mask
+from models.func.subsequent_mask import subsequent_mask
 class Batch:
     """Object for holding a batch of data with mask during training."""
 

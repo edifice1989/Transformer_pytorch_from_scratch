@@ -1,27 +1,13 @@
 import torch
 import torch.nn as nn
-class FeedForwardLayer(nn.Module):
+class PositionwiseFeedForward(nn.Module):
+    "Implements FFN equation."
 
-    def __init__(self, d_model, hidden,dropout=0.1):
-
-        super(FeedForwardLayer, self).__init__()
-
-        self.linear1 = nn.Linear(d_model, hidden)
-
-        self.linear2 = nn.Linear(hidden, d_model)
-
-        self.relu = nn.ReLU()
-
+    def __init__(self, d_model, d_ff, dropout=0.1):
+        super(PositionwiseFeedForward, self).__init__()
+        self.w_1 = nn.Linear(d_model, d_ff)
+        self.w_2 = nn.Linear(d_ff, d_model)
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, x):
-
-        x = self.linear1(x)
-
-        x = self.relu(x)
-
-        x = self.dropout(x)
-
-        x = self.linear2(x)
-
-        return x
+        return self.w_2(self.dropout(self.w_1(x).relu()))
