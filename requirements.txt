@@ -1,3 +1,4 @@
 pandas
 altair
 pytorch
+'python3 -m spacy download de_core_news_sm'
